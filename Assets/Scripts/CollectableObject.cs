@@ -5,6 +5,7 @@ public class CollectableObject : MonoBehaviour
 {
     private Depth_ScreenToWorldPosition _manager;
     private bool isCollected = false;
+    private bool isAnimating = false; // Para evitar múltiples corutinas al mismo tiempo
 
     [SerializeField]
     private float _collectDistance = 3f;
@@ -12,39 +13,50 @@ public class CollectableObject : MonoBehaviour
     [SerializeField]
     private GameObject _infoPanelPrefab;
 
+    private GameObject _advicePanel;
+
     public void Initialize(Depth_ScreenToWorldPosition manager)
     {
         _manager = manager;
     }
 
+    void Start()
+    {
+        _advicePanel = GameObject.Find("AdvicePanel");
+    }
+
     void Update()
     {
-        if (isCollected) return;
+        if (isCollected) return; // Bloquear si ya está recolectado
 
         // Detectar si el jugador está lo suficientemente cerca del objeto
         float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
 
-        if (distance <= _collectDistance)
+        if (Input.touchCount > 0)
         {
-            // Detectar toques en dispositivos móviles
-            if (Input.touchCount > 0)
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
             {
-                Touch touch = Input.GetTouch(0);
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
-                // Solo procesamos el toque cuando comienza
-                if (touch.phase == TouchPhase.Began)
+                int collectableLayerMask = LayerMask.GetMask("Collectable");
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, collectableLayerMask))
                 {
-                    RaycastHit hit;
-                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-
-                    // Detectar si el toque fue en este objeto
-                    int collectableLayerMask = LayerMask.GetMask("Collectable");
-
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, collectableLayerMask))
+                    if (hit.transform == this.transform)
                     {
-                        if (hit.transform == this.transform)
+                        if (distance <= _collectDistance)
                         {
-                            Collect(); // Recolectar el objeto
+                            Collect();
+                        }
+                        else
+                        {
+                            if (!isAnimating) // Solo animar si no hay animación en curso
+                            {
+                                StartCoroutine(ShowAndHideAdvicePanel());
+                            }
                         }
                     }
                 }
@@ -61,49 +73,45 @@ public class CollectableObject : MonoBehaviour
 
             if (_infoPanelPrefab != null)
             {
-                // Instanciar el prefab del Canvas con el panel de información
                 GameObject infoPanelInstance = Instantiate(_infoPanelPrefab);
-
-                // Iniciar la animación de deslizamiento suave desde arriba
-                StartCoroutine(AnimatePanelSlideDown(infoPanelInstance));
             }
         }
     }
 
-    // Corutina para animar el panel deslizándose desde arriba hacia el centro de la pantalla
-    private IEnumerator AnimatePanelSlideDown(GameObject panel)
+    private IEnumerator ShowAndHideAdvicePanel()
     {
-        float duration = 0.75f; // Duración de la animación
+        isAnimating = true;
+
+        CanvasGroup canvasGroup = _advicePanel.GetComponent<CanvasGroup>();
+        float fadeDuration = 0.5f;
+        float waitTime = 2f;
+
+        canvasGroup.alpha = 0f;
+        _advicePanel.SetActive(true);
+
+        yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 0f, 1f, fadeDuration));
+
+        yield return new WaitForSeconds(waitTime);
+
+        yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 1f, 0f, fadeDuration));
+
+        _advicePanel.SetActive(false);
+
+        isAnimating = false;
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
+    {
         float elapsedTime = 0f;
 
-        RectTransform panelRect = panel.GetComponent<RectTransform>();
-
-        // Asegurarse de que el panel esté activo
-        panel.SetActive(true);
-
-        // Guardamos la posición final (donde el panel debe quedarse al final de la animación)
-        Vector2 endPosition = panelRect.anchoredPosition;
-
-        // Posición inicial: fuera de la pantalla, por encima del Canvas
-        Vector2 startPosition = new Vector2(endPosition.x, Screen.height * 1.5f);  // Empieza bien arriba
-
-        // Colocamos el panel en la posición inicial (fuera de la pantalla)
-        panelRect.anchoredPosition = startPosition;
-
-        // Interpolación suave del movimiento
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsedTime / duration);
-
-            // Interpolamos la posición de arriba hacia el centro
-            panelRect.anchoredPosition = Vector2.Lerp(startPosition, endPosition, progress);
-
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
             yield return null;
         }
 
-        // Asegurarnos de que el panel termine exactamente en la posición final
-        panelRect.anchoredPosition = endPosition;
+        canvasGroup.alpha = endAlpha;
     }
 
 }
