@@ -317,7 +317,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 0
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &744398279
 GameObject:
@@ -1133,7 +1133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Acercate un poco m\xE1s para recoger el objeto!"
+  m_text: "Ac\xE9rcate un poco m\xE1s para recoger el objeto!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f325cba1b6951b141af97443bc8a69fa, type: 2}
   m_sharedMaterial: {fileID: -3383392714199549868, guid: f325cba1b6951b141af97443bc8a69fa, type: 2}
@@ -1160,8 +1160,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1422,11 +1422,11 @@ MonoBehaviour:
   _camera: {fileID: 1380190701}
   _prefabsData:
   - prefab: {fileID: 9105604181534560191, guid: 8e87d8a50de7a274c9dd13210cd64728, type: 3}
-  - prefab: {fileID: 336631806180578885, guid: a9c48f5d1db7ea7498f173c7d5e8c879, type: 3}
-  - prefab: {fileID: 1375668655239066312, guid: 56ce04f1a49883e4897bc981699f50c5, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 101e548dbda36aa4990a63780d7c7af7, type: 3}
   - prefab: {fileID: 3866846435319479792, guid: 766714431533de24cbfa7dfa4139ba87, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: c1986afe1ab0ed741a773f22f70dca0d, type: 3}
   _collectionCounterText: {fileID: 1653896182}
-  _maxObjects: 10
+  _maxObjects: 17
   _spawnInterval: 5
   distance: 3
 --- !u!1660057539 &9223372036854775807

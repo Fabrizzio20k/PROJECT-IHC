@@ -69,6 +69,13 @@ public class CollectableObject : MonoBehaviour
         if (!isCollected)
         {
             isCollected = true;
+
+            if (_advicePanel.activeSelf || isAnimating)
+            {
+                //     StopAllCoroutines();  // Detener cualquier animación en curso
+                ResetAdvicePanel();    // Reiniciar el estado del AdvicePanel
+            }
+
             _manager.CollectPrefab(gameObject);
 
             if (_infoPanelPrefab != null)
@@ -77,6 +84,15 @@ public class CollectableObject : MonoBehaviour
             }
         }
     }
+
+    private void ResetAdvicePanel()
+    {
+        CanvasGroup canvasGroup = _advicePanel.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
+        //_advicePanel.SetActive(false);
+        isAnimating = false;
+    }
+
 
     private IEnumerator ShowAndHideAdvicePanel()
     {
@@ -87,7 +103,7 @@ public class CollectableObject : MonoBehaviour
         float waitTime = 2f;
 
         canvasGroup.alpha = 0f;
-        _advicePanel.SetActive(true);
+        //_advicePanel.SetActive(true);
 
         yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 0f, 1f, fadeDuration));
 
@@ -95,7 +111,7 @@ public class CollectableObject : MonoBehaviour
 
         yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 1f, 0f, fadeDuration));
 
-        _advicePanel.SetActive(false);
+        //_advicePanel.SetActive(false);
 
         isAnimating = false;
     }
