@@ -1421,10 +1421,15 @@ MonoBehaviour:
   _raycastManager: {fileID: 1380190706}
   _camera: {fileID: 1380190701}
   _prefabsData:
-  - prefab: {fileID: 9105604181534560191, guid: 8e87d8a50de7a274c9dd13210cd64728, type: 3}
-  - prefab: {fileID: 9105604181534560191, guid: 101e548dbda36aa4990a63780d7c7af7, type: 3}
-  - prefab: {fileID: 3866846435319479792, guid: 766714431533de24cbfa7dfa4139ba87, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: e7bbba2a02006994b96655fffdf50525, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 257d9ab461ea76141b3a9b3c9b844d04, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 909887c7e7fc3424184acc53e74ce7ac, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 4c08f3ac1d6fc5e418033e0248c1441a, type: 3}
   - prefab: {fileID: 9105604181534560191, guid: c1986afe1ab0ed741a773f22f70dca0d, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: c9a1f5a580605f7499101eb27cb045a8, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 432195f55ae6beb479fb6807315ba9c2, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 9f01d04d54d8b4d46b6074c2aa4359c9, type: 3}
+  - prefab: {fileID: 9105604181534560191, guid: 101e548dbda36aa4990a63780d7c7af7, type: 3}
   _collectionCounterText: {fileID: 1653896182}
   _maxObjects: 17
   _spawnInterval: 5
