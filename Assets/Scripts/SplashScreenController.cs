@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class SplashScreenController : MonoBehaviour
 {
-    public Image backgroundImage;  // La imagen de fondo temporal
-    public float fadeDuration = 1f;  // Duración del fade
+    public Image backgroundImage;
+    public float fadeDuration = 1f;
 
     void Start()
     {
@@ -14,22 +14,17 @@ public class SplashScreenController : MonoBehaviour
 
     IEnumerator FadeOutBackground()
     {
-        // Espera un breve momento para asegurarse de que los otros elementos estén listos
-        yield return new WaitForSeconds(1f); // Ajusta este valor si necesitas más tiempo de carga
-
-        // Realiza el fade out de la imagen de fondo
+        yield return new WaitForSeconds(1f);
         float elapsedTime = 0f;
         Color color = backgroundImage.color;
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(1f - (elapsedTime / fadeDuration));  // Reducimos el alpha de la imagen
+            color.a = Mathf.Clamp01(1f - (elapsedTime / fadeDuration));
             backgroundImage.color = color;
             yield return null;
         }
-
-        // Finalmente, desactiva la imagen cuando el fade haya terminado
         backgroundImage.gameObject.SetActive(false);
     }
 }
