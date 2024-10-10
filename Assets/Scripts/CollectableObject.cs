@@ -15,6 +15,9 @@ public class CollectableObject : MonoBehaviour
 
     private GameObject _advicePanel;
 
+    private AudioSource _audioSourceOk;
+    private AudioSource _audioSourceError;
+
     public void Initialize(Depth_ScreenToWorldPosition manager)
     {
         _manager = manager;
@@ -23,13 +26,14 @@ public class CollectableObject : MonoBehaviour
     void Start()
     {
         _advicePanel = GameObject.Find("AdvicePanel");
+        _audioSourceOk = GameObject.Find("SoundCollect").GetComponent<AudioSource>();
+        _audioSourceError = GameObject.Find("Error").GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        if (isCollected) return; // Bloquear si ya está recolectado
+        if (isCollected) return;
 
-        // Detectar si el jugador está lo suficientemente cerca del objeto
         float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
 
         if (Input.touchCount > 0)
@@ -53,7 +57,9 @@ public class CollectableObject : MonoBehaviour
                         }
                         else
                         {
-                            if (!isAnimating) // Solo animar si no hay animación en curso
+                            Handheld.Vibrate();
+                            _audioSourceError.Play();
+                            if (!isAnimating)
                             {
                                 StartCoroutine(ShowAndHideAdvicePanel());
                             }
@@ -70,11 +76,10 @@ public class CollectableObject : MonoBehaviour
         {
             isCollected = true;
 
-            if (_advicePanel.activeSelf || isAnimating)
-            {
-                //     StopAllCoroutines();  // Detener cualquier animación en curso
-                ResetAdvicePanel();    // Reiniciar el estado del AdvicePanel
-            }
+            ResetAdvicePanel();
+
+            Handheld.Vibrate();
+            _audioSourceOk.Play();
 
             _manager.CollectPrefab(gameObject);
 
@@ -89,10 +94,8 @@ public class CollectableObject : MonoBehaviour
     {
         CanvasGroup canvasGroup = _advicePanel.GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0f;
-        //_advicePanel.SetActive(false);
         isAnimating = false;
     }
-
 
     private IEnumerator ShowAndHideAdvicePanel()
     {
@@ -103,15 +106,12 @@ public class CollectableObject : MonoBehaviour
         float waitTime = 2f;
 
         canvasGroup.alpha = 0f;
-        //_advicePanel.SetActive(true);
 
         yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 0f, 1f, fadeDuration));
 
         yield return new WaitForSeconds(waitTime);
 
         yield return StartCoroutine(FadeCanvasGroup(canvasGroup, 1f, 0f, fadeDuration));
-
-        //_advicePanel.SetActive(false);
 
         isAnimating = false;
     }
@@ -129,5 +129,4 @@ public class CollectableObject : MonoBehaviour
 
         canvasGroup.alpha = endAlpha;
     }
-
 }

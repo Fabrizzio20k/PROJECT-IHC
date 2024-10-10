@@ -5055,6 +5055,7 @@ MonoBehaviour:
   amplitude: 0.1
   frequency: 2
   rotationSpeed: 50
+  rotationAxis: 1
 --- !u!4 &8437012792176645381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6fad5c3cd22007542aa74696935a2cc4, type: 3}
