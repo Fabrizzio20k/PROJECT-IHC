@@ -4999,6 +4999,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Business_Man
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 7cd2449b77ef0c0428f4f5a20a8dea78, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9861ca0716e550e4ea3b16fd001eb593, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 7cd2449b77ef0c0428f4f5a20a8dea78, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
